@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
 
 	processImage(d_inRGBA, d_intensity, imageInputRGBA.rows, imageInputRGBA.cols);
 
-	unsigned char* img;
+	unsigned char* img = new unsigned char[imageInputRGBA.rows*imageInputRGBA.cols];
 	checkCudaErrors(cudaMemcpy(img, d_intensity, sizeof(unsigned char)*imageInputRGBA.rows*imageInputRGBA.cols, cudaMemcpyDeviceToHost));
 
 	cv::Mat output(imageInputRGBA.rows, imageInputRGBA.cols, CV_8UC1, (void*)img);
@@ -110,6 +110,7 @@ int main(int argc, char** argv) {
 
 	cudaFree(d_inputImageRGBA_);
 	cudaFree(d_intensity);
+	delete img;
 
 	return 0;
 }
